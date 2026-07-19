@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;800&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Oswald:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;800&family=Roboto+Slab:wght@400;600;700&display=swap");
 
 :root {
     --bg: oklch(0.95 0.015 80);
@@ -474,17 +474,6 @@ h1 {
     border-radius: 50%;
 }
 
-.table-note {
-    margin: 14px 0 0;
-    color: var(--muted);
-    font-size: 0.75rem;
-    text-align: right;
-}
-
-.sample-score {
-    margin-right: 4px;
-}
-
 .load-error {
     padding: 24px;
     background: var(--surface);
@@ -513,5 +502,887 @@ h1 {
     .game-card-actions {
         align-items: flex-start;
         flex-direction: column;
+    }
+}
+
+/* Game previews on the overview page */
+.game-card--ticket_to_ride {
+    position: relative;
+    overflow: hidden;
+    border: 3px solid #27363b;
+    border-top: 12px solid #b84335;
+    background:
+        linear-gradient(90deg, transparent 0 6%, rgba(114, 68, 34, 0.08) 6% 6.5%, transparent 6.5%),
+        #eadbbb;
+    border-radius: 8px;
+    box-shadow: 10px 12px 0 rgba(39, 54, 59, 0.18);
+}
+
+.game-card--ticket_to_ride::before {
+    content: "";
+    position: absolute;
+    inset: 21px 20px auto;
+    height: 5px;
+    border-block: 2px solid #27363b;
+    opacity: 0.22;
+}
+
+.game-card--ticket_to_ride .primary-link {
+    color: #fff0c4;
+    border: 2px solid #c79d49;
+    background: #203138;
+    box-shadow: 0 5px 0 #111d21;
+}
+
+.game-card--catan {
+    position: relative;
+    overflow: hidden;
+    color: #31281c;
+    border: 8px solid #6b3f22;
+    background:
+        radial-gradient(circle at 12% 18%, rgba(255, 255, 255, 0.35) 0 3px, transparent 4px),
+        linear-gradient(135deg, #e8ce8b, #c99849);
+    border-radius: 4px;
+    box-shadow: 10px 12px 0 rgba(70, 42, 24, 0.2);
+}
+
+.game-card--catan::before,
+.game-card--catan::after {
+    content: "";
+    position: absolute;
+    width: 72px;
+    height: 82px;
+    opacity: 0.22;
+    background: #28744d;
+    clip-path: polygon(25% 6.7%, 75% 6.7%, 100% 50%, 75% 93.3%, 25% 93.3%, 0 50%);
+}
+
+.game-card--catan::before {
+    top: -24px;
+    right: 18px;
+}
+
+.game-card--catan::after {
+    right: -20px;
+    bottom: -20px;
+    background: #b95632;
+}
+
+.game-card--catan .primary-link {
+    color: #fff0bd;
+    border: 3px solid #4a2d1b;
+    background: #286b43;
+    box-shadow: 0 5px 0 #4a2d1b;
+}
+
+.game-card .primary-link {
+    position: relative;
+    z-index: 1;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    border-radius: 4px;
+    letter-spacing: 0.02em;
+}
+
+.game-card .primary-link span {
+    font-size: 1.1rem;
+    line-height: 1;
+}
+
+.game-card .primary-link:hover {
+    filter: brightness(1.12);
+    transform: translateY(-1px);
+}
+
+/* Shared structure for the richly themed game pages */
+.game-page {
+    min-height: 100vh;
+}
+
+.game-page .game-hero {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+}
+
+.game-page .header-content,
+.game-page .site-nav {
+    position: relative;
+    z-index: 2;
+}
+
+.game-page .container {
+    max-width: 1200px;
+    gap: 52px;
+}
+
+.game-page .game-section {
+    position: relative;
+    padding: 32px;
+}
+
+.game-page .section-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.game-page .section-title span {
+    display: inline-grid;
+    place-items: center;
+    flex: 0 0 auto;
+}
+
+/* Ticket to Ride: railway, station signs, tickets, brass, and route maps */
+.ticket-theme {
+    --rail-ink: #203138;
+    --rail-red: #a83e32;
+    --rail-gold: #c79d49;
+    --rail-paper: #ead9b6;
+    --rail-paper-light: #f5e8c9;
+    --rail-wood: #563a29;
+    --bg: #c8b58f;
+    --surface: var(--rail-paper);
+    --text: var(--rail-ink);
+    --muted: #705f4c;
+    --shadow-dark: rgba(52, 37, 25, 0.3);
+    --white: #fff3d6;
+    --radius: 6px;
+    font-family: "Roboto Slab", serif;
+    background-color: #c4b086;
+    background-image:
+        linear-gradient(rgba(58, 45, 31, 0.08) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(58, 45, 31, 0.08) 1px, transparent 1px),
+        repeating-linear-gradient(23deg, transparent 0 18px, rgba(91, 63, 34, 0.035) 19px 20px);
+    background-size: 34px 34px, 34px 34px, auto;
+}
+
+.ticket-theme .ticket-hero {
+    margin: 18px;
+    padding: 18px 24px 44px;
+    color: #f9e9bd;
+    border: 8px solid #1c292e;
+    border-radius: 8px;
+    background:
+        linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+        radial-gradient(circle at 50% -20%, #526870 0, #293d44 46%, #17272d 100%);
+    background-size: 18px 100%, auto;
+    box-shadow: 0 12px 0 #704837, 0 24px 40px rgba(42, 29, 20, 0.35);
+}
+
+.ticket-theme .site-nav {
+    color: #f9e9bd;
+    border: 2px solid #c79d49;
+    background: #17262c;
+    box-shadow: 0 4px 0 #0e171a, inset 0 0 0 2px rgba(255, 255, 255, 0.05);
+}
+
+.ticket-theme .site-nav a {
+    color: #d9c79d;
+    border-radius: 2px;
+    font-family: "Oswald", sans-serif;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.ticket-theme .site-nav a.active {
+    color: #1f2f35;
+    background: #c79d49;
+    box-shadow: inset 0 0 0 2px #e6c777;
+}
+
+.ticket-theme .header-content {
+    padding-top: 26px;
+}
+
+.ticket-theme .rail-emblem {
+    width: 68px;
+    height: 68px;
+    margin: 0 auto 14px;
+    display: grid;
+    place-items: center;
+    border: 5px double #d2ab5a;
+    border-radius: 50%;
+    background: #a83e32;
+    box-shadow: 0 0 0 4px #1d2c31, 0 6px 16px rgba(0, 0, 0, 0.35);
+}
+
+.ticket-theme .rail-emblem span {
+    font-family: "Oswald", sans-serif;
+    font-size: 1.25rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+}
+
+.ticket-theme h1 {
+    color: #f7e3ae;
+    font-family: "Oswald", sans-serif;
+    font-size: clamp(3.4rem, 9vw, 6.8rem);
+    line-height: 0.94;
+    letter-spacing: 0.015em;
+    text-transform: uppercase;
+    text-shadow: 0 4px 0 #8b342c, 0 8px 0 rgba(0, 0, 0, 0.25);
+}
+
+.ticket-theme .eyebrow {
+    color: #d1ad61;
+    font-family: "Oswald", sans-serif;
+    letter-spacing: 0.2em;
+}
+
+.ticket-theme .header-subtitle {
+    color: #d9c99f;
+    font-family: "Oswald", sans-serif;
+    font-size: 1.05rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+}
+
+.ticket-theme .header-link {
+    color: #eedaa8;
+    border-color: #c79d49;
+    font-family: "Oswald", sans-serif;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+.ticket-theme .game-section {
+    border: 3px solid #2b393d;
+    border-radius: 7px;
+    background:
+        linear-gradient(90deg, transparent 0 39px, rgba(161, 63, 51, 0.2) 40px 41px, transparent 42px),
+        repeating-linear-gradient(0deg, transparent 0 31px, rgba(89, 66, 42, 0.09) 32px 33px),
+        var(--rail-paper);
+    box-shadow: 10px 12px 0 rgba(48, 36, 25, 0.22), inset 0 0 0 5px #d7c49b;
+}
+
+.ticket-theme .section-title {
+    width: fit-content;
+    margin: -50px 0 30px 12px;
+    padding: 10px 18px 10px 10px;
+    color: #f7e6bc;
+    border: 2px solid #c79d49;
+    border-radius: 3px;
+    background: #22333a;
+    box-shadow: 5px 5px 0 rgba(50, 35, 25, 0.25);
+    font-family: "Oswald", sans-serif;
+    font-size: 1.2rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.ticket-theme .section-title span {
+    width: 34px;
+    height: 28px;
+    color: #24343a;
+    background: #c79d49;
+    border-radius: 2px;
+    font-size: 0.72rem;
+}
+
+.ticket-theme .player-card {
+    position: relative;
+    min-height: 94px;
+    padding: 16px 48px 16px 18px;
+    overflow: hidden;
+    border: 2px solid #4a3b2c;
+    border-left: 10px solid var(--accent, var(--rail-red));
+    border-radius: 3px;
+    background:
+        radial-gradient(circle at 100% 50%, transparent 0 9px, var(--rail-paper-light) 10px),
+        var(--rail-paper-light);
+    box-shadow: 5px 6px 0 rgba(70, 48, 31, 0.18);
+}
+
+.ticket-theme .player-card::after {
+    content: "BOARDING PASS";
+    position: absolute;
+    top: 50%;
+    right: -35px;
+    color: rgba(50, 44, 34, 0.45);
+    font-family: "Oswald", sans-serif;
+    font-size: 0.58rem;
+    letter-spacing: 0.15em;
+    transform: translateY(-50%) rotate(90deg);
+}
+
+.ticket-theme .avatar {
+    border: 3px solid #213139;
+    border-radius: 50%;
+    background: #c79d49;
+    box-shadow: 0 0 0 3px #d5b96f;
+}
+
+.ticket-theme .avatar img {
+    border-radius: 50%;
+}
+
+.ticket-theme .player-name {
+    font-family: "Oswald", sans-serif;
+    font-size: 1.1rem;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+}
+
+.ticket-theme .best-card {
+    border: 7px solid #463126;
+    border-radius: 4px;
+    background: #efe0bc;
+    box-shadow: 9px 10px 0 rgba(55, 37, 25, 0.25), inset 0 0 0 2px #a83e32;
+}
+
+.ticket-theme .best-card:nth-child(odd) {
+    transform: rotate(-0.7deg);
+}
+
+.ticket-theme .best-card:nth-child(even) {
+    transform: rotate(0.7deg);
+}
+
+.ticket-theme .best-photo {
+    border: 2px solid #2a373b;
+    border-radius: 0;
+    box-shadow: none;
+}
+
+.ticket-theme .best-photo img {
+    filter: saturate(0.85) contrast(1.04);
+}
+
+.ticket-theme .best-year {
+    color: #f4dfad;
+    border: 2px solid #c79d49;
+    border-radius: 2px;
+    background: #a83e32;
+    box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.25);
+    font-family: "Oswald", sans-serif;
+}
+
+.ticket-theme .best-info {
+    font-family: "Oswald", sans-serif;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.ticket-theme .table-container {
+    padding: 10px;
+    border: 7px solid #513728;
+    border-radius: 3px;
+    background: #17262c;
+    box-shadow: 8px 9px 0 rgba(46, 31, 21, 0.25), inset 0 0 0 2px #bd9346;
+}
+
+.ticket-theme .flat-table {
+    color: #efe1bc;
+    font-family: "Oswald", sans-serif;
+    letter-spacing: 0.04em;
+}
+
+.ticket-theme .flat-table th {
+    color: #f5e7c4;
+    border-color: #936f38;
+}
+
+.ticket-theme .flat-table td {
+    color: #f5e7c4;
+    border-color: rgba(213, 181, 111, 0.22);
+    background: linear-gradient(rgba(255, 255, 255, 0.018), rgba(0, 0, 0, 0.025));
+}
+
+.ticket-theme .rail-player-marker {
+    width: 11px;
+    height: 11px;
+    margin-right: 7px;
+    display: inline-block;
+    vertical-align: -1px;
+    border: 2px solid #f5e7c4;
+    border-radius: 50%;
+    background: var(--player-color);
+    box-shadow: 0 0 0 1px #17262c;
+}
+
+.ticket-theme .flat-table th:first-child,
+.ticket-theme .flat-table td:first-child {
+    color: #cda959;
+}
+
+.ticket-theme .total-row {
+    background: #6f302d;
+}
+
+.ticket-theme .total-row td {
+    border-top-color: #c79d49;
+}
+
+.ticket-theme .cell-good {
+    text-decoration-color: #d8ad4f;
+    text-decoration-thickness: 3px;
+}
+
+.ticket-theme .footer-inner {
+    color: #ead9b6;
+    border: 2px solid #c79d49;
+    border-radius: 3px;
+    background: #203138;
+    box-shadow: 6px 6px 0 rgba(47, 31, 20, 0.25);
+}
+
+.ticket-theme .footer a {
+    color: #f1d58d;
+    border-color: #a83e32;
+}
+
+/* Catan: resource hexes, timber frames, parchment, and strategy boards */
+.catan-theme {
+    --catan-sea: #24779a;
+    --catan-sea-dark: #16546f;
+    --catan-wood: #60391f;
+    --catan-wood-light: #8a582d;
+    --catan-parchment: #ead7a0;
+    --catan-ink: #30271a;
+    --catan-green: #286b43;
+    --catan-brick: #aa4d2e;
+    --catan-wheat: #d0a944;
+    --bg: var(--catan-sea);
+    --surface: var(--catan-parchment);
+    --text: var(--catan-ink);
+    --muted: #715e3d;
+    --shadow-dark: rgba(49, 33, 20, 0.35);
+    --white: #fff0bd;
+    --radius: 4px;
+    font-family: "Roboto Slab", serif;
+    background-color: var(--catan-sea);
+    background-image:
+        radial-gradient(circle at 15% 22%, rgba(255, 255, 255, 0.14) 0 2px, transparent 3px),
+        radial-gradient(circle at 72% 68%, rgba(255, 255, 255, 0.11) 0 3px, transparent 4px),
+        linear-gradient(30deg, rgba(255, 255, 255, 0.035) 12%, transparent 12.5%, transparent 87%, rgba(255, 255, 255, 0.035) 87.5%),
+        linear-gradient(150deg, rgba(255, 255, 255, 0.035) 12%, transparent 12.5%, transparent 87%, rgba(255, 255, 255, 0.035) 87.5%);
+    background-size: 62px 62px, 83px 83px, 72px 126px, 72px 126px;
+}
+
+.catan-theme .catan-hero {
+    margin: 20px;
+    padding: 18px 24px 44px;
+    color: #3a2a19;
+    border: 11px solid var(--catan-wood);
+    border-radius: 5px;
+    background:
+        radial-gradient(circle at 15% 20%, rgba(255, 255, 255, 0.55) 0 2px, transparent 3px),
+        linear-gradient(110deg, rgba(255, 255, 255, 0.2), transparent 45%),
+        #e8cb7c;
+    box-shadow: 0 0 0 4px #3d2618, 0 18px 35px rgba(25, 44, 39, 0.45), inset 0 0 60px rgba(121, 70, 27, 0.22);
+}
+
+.catan-theme .catan-hero::before,
+.catan-theme .catan-hero::after {
+    content: "";
+    position: absolute;
+    z-index: 0;
+    width: 250px;
+    height: 286px;
+    opacity: 0.11;
+    clip-path: polygon(25% 6.7%, 75% 6.7%, 100% 50%, 75% 93.3%, 25% 93.3%, 0 50%);
+}
+
+.catan-theme .catan-hero::before {
+    top: -105px;
+    left: -58px;
+    background: var(--catan-green);
+}
+
+.catan-theme .catan-hero::after {
+    right: -45px;
+    bottom: -128px;
+    background: var(--catan-brick);
+}
+
+.catan-theme .site-nav {
+    border: 3px solid #3c2517;
+    border-radius: 4px;
+    background:
+        linear-gradient(rgba(255, 255, 255, 0.08), transparent),
+        var(--catan-wood);
+    box-shadow: 0 5px 0 #3b2518, inset 0 0 0 2px #9c6c3d;
+}
+
+.catan-theme .site-nav a {
+    color: #efd99c;
+    border-radius: 2px;
+    font-family: "Cinzel", serif;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+}
+
+.catan-theme .site-nav a.active {
+    color: #302316;
+    background: var(--catan-wheat);
+    box-shadow: inset 0 0 0 2px #f0d374;
+}
+
+.catan-theme .header-content {
+    padding-top: 22px;
+}
+
+.catan-theme h1 {
+    color: #8d3525;
+    font-family: "Cinzel", serif;
+    font-size: clamp(4.2rem, 12vw, 8rem);
+    line-height: 0.9;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    text-shadow: 0 3px 0 #f5dc92, 0 7px 0 #69331f, 0 10px 18px rgba(71, 40, 20, 0.35);
+}
+
+.catan-theme .eyebrow {
+    color: #5d4326;
+    font-family: "Cinzel", serif;
+    letter-spacing: 0.18em;
+}
+
+.catan-theme .header-subtitle {
+    color: #493723;
+    font-family: "Cinzel", serif;
+    font-size: 0.95rem;
+    font-weight: 800;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+}
+
+.catan-theme .header-link {
+    color: #654221;
+    border-color: #8d3525;
+    font-family: "Cinzel", serif;
+    font-size: 0.7rem;
+}
+
+.catan-tiles {
+    height: 66px;
+    margin: 0 auto 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.catan-tiles span {
+    width: 56px;
+    height: 64px;
+    margin-left: -8px;
+    border: 0;
+    clip-path: polygon(25% 6.7%, 75% 6.7%, 100% 50%, 75% 93.3%, 25% 93.3%, 0 50%);
+    box-shadow: inset 0 0 18px rgba(0, 0, 0, 0.25);
+}
+
+.catan-tiles span:first-child {
+    margin-left: 0;
+}
+
+.tile-forest { background: #2c7449; }
+.tile-fields { background: #d5b749; }
+.tile-hills { background: #ad5436; }
+.tile-mountains { background: #77776b; }
+.tile-pasture { background: #82a84c; }
+
+.catan-theme .game-section {
+    border: 9px solid var(--catan-wood);
+    border-radius: 3px;
+    background:
+        radial-gradient(circle at 12px 12px, rgba(116, 76, 33, 0.1) 0 2px, transparent 3px),
+        linear-gradient(105deg, rgba(255, 255, 255, 0.25), transparent 45%),
+        var(--catan-parchment);
+    background-size: 29px 29px, auto, auto;
+    box-shadow: 0 0 0 3px #3f2819, 12px 14px 0 rgba(30, 57, 49, 0.28), inset 0 0 35px rgba(96, 57, 31, 0.18);
+}
+
+.catan-theme .game-section::after {
+    content: "";
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    width: 38px;
+    height: 44px;
+    opacity: 0.32;
+    background: var(--catan-green);
+    clip-path: polygon(25% 6.7%, 75% 6.7%, 100% 50%, 75% 93.3%, 25% 93.3%, 0 50%);
+}
+
+.catan-theme .section-title {
+    width: fit-content;
+    margin: -56px 0 32px 8px;
+    padding: 10px 20px 10px 10px;
+    color: #f1d99a;
+    border: 3px solid #3d2617;
+    border-radius: 3px;
+    background: var(--catan-green);
+    box-shadow: 5px 6px 0 rgba(60, 38, 23, 0.3), inset 0 0 0 2px #4d8a61;
+    font-family: "Cinzel", serif;
+    font-size: 1.05rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.catan-theme .section-title span {
+    width: 34px;
+    height: 38px;
+    color: #3c2817;
+    background: var(--catan-wheat);
+    clip-path: polygon(25% 6.7%, 75% 6.7%, 100% 50%, 75% 93.3%, 25% 93.3%, 0 50%);
+    font-size: 0.7rem;
+}
+
+.catan-theme .player-stats-grid {
+    gap: 26px;
+}
+
+.catan-theme .player-stat-card {
+    --tile-color: #d4b24e;
+    position: relative;
+    padding: 26px 24px;
+    overflow: hidden;
+    border: 0;
+    border-radius: 0;
+    background:
+        linear-gradient(135deg, rgba(255, 255, 255, 0.32), transparent 50%),
+        var(--tile-color);
+    clip-path: polygon(8% 0, 92% 0, 100% 13%, 100% 87%, 92% 100%, 8% 100%, 0 87%, 0 13%);
+    box-shadow: none;
+}
+
+.catan-theme .player-stat-card:nth-child(4n + 1) { --tile-color: #d3ae42; }
+.catan-theme .player-stat-card:nth-child(4n + 2) { --tile-color: #7da34f; }
+.catan-theme .player-stat-card:nth-child(4n + 3) { --tile-color: #b9613e; }
+.catan-theme .player-stat-card:nth-child(4n + 4) { --tile-color: #8b8b78; }
+
+.catan-theme .player-stat-card::after {
+    content: "";
+    position: absolute;
+    inset: 7px;
+    pointer-events: none;
+    border: 2px solid rgba(70, 44, 24, 0.45);
+    clip-path: inherit;
+}
+
+.catan-theme .player-stat-card .avatar {
+    width: 58px;
+    height: 58px;
+    z-index: 1;
+    border: 4px solid var(--catan-wood);
+    border-radius: 50%;
+    background: #f0dda6;
+    box-shadow: 0 0 0 3px rgba(255, 239, 183, 0.65), 3px 4px 0 rgba(67, 43, 24, 0.25);
+}
+
+.catan-theme .player-stat-card .avatar img {
+    border-radius: 50%;
+}
+
+.catan-theme .player-rank {
+    color: #5f4125;
+    font-family: "Cinzel", serif;
+    font-weight: 800;
+}
+
+.catan-theme .player-stat-card h3 {
+    color: #302417;
+    font-family: "Cinzel", serif;
+    font-size: 1.08rem;
+}
+
+.catan-theme .compact-stats {
+    position: relative;
+    z-index: 1;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    border-top: 0;
+}
+
+.catan-theme .compact-stats dt {
+    color: #5e4329;
+    font-family: "Cinzel", serif;
+    font-size: 0.58rem;
+}
+
+.catan-theme .compact-stats dd {
+    color: #2f2418;
+    font-size: 1.15rem;
+}
+
+.catan-theme .wins-stat {
+    grid-column: 1 / -1;
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border: 3px solid #3c2818;
+    background: var(--catan-green);
+    box-shadow: inset 0 0 0 2px #4f8d63, 4px 5px 0 rgba(60, 40, 24, 0.22);
+}
+
+.catan-theme .wins-stat dt {
+    color: #f4dfa2;
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+}
+
+.catan-theme .wins-stat dd {
+    margin: 0;
+    display: flex;
+    align-items: baseline;
+    gap: 7px;
+    color: #fff0b8;
+}
+
+.catan-theme .wins-stat strong {
+    font-family: "Cinzel", serif;
+    font-size: 2.65rem;
+    line-height: 0.8;
+}
+
+.catan-theme .wins-stat span {
+    font-family: "Cinzel", serif;
+    font-size: 0.62rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.catan-theme .secondary-stat {
+    padding-top: 9px;
+    border-top: 1px solid rgba(75, 47, 26, 0.35);
+    text-align: center;
+    opacity: 0.7;
+}
+
+.catan-theme .best-card {
+    padding: 10px;
+    border: 8px solid var(--catan-wood);
+    border-radius: 3px;
+    background: #d4aa55;
+    box-shadow: 8px 10px 0 rgba(44, 37, 24, 0.25), inset 0 0 0 3px #a97838;
+}
+
+.catan-theme .best-photo {
+    border: 3px solid #3c281a;
+    border-radius: 1px;
+    box-shadow: none;
+}
+
+.catan-theme .best-photo img {
+    filter: saturate(0.9) contrast(1.04);
+}
+
+.catan-theme .best-year {
+    color: #f4dfaa;
+    border: 3px solid #3c2818;
+    border-radius: 2px;
+    background: var(--catan-green);
+    box-shadow: 3px 4px 0 rgba(57, 37, 22, 0.32);
+    font-family: "Cinzel", serif;
+}
+
+.catan-theme .best-info {
+    color: #372719;
+    font-family: "Cinzel", serif;
+    font-size: 0.88rem;
+}
+
+.catan-theme .table-container {
+    padding: 11px;
+    border: 7px solid #3c2618;
+    border-radius: 2px;
+    background:
+        repeating-linear-gradient(90deg, #694123 0 32px, #754928 33px 64px);
+    box-shadow: 7px 9px 0 rgba(41, 35, 24, 0.28), inset 0 0 0 3px #9b6737;
+}
+
+.catan-theme .flat-table {
+    color: #332719;
+    background: #e6cf92;
+    font-family: "Roboto Slab", serif;
+}
+
+.catan-theme .flat-table th {
+    color: #f1dc9d;
+    border-color: #3f2b1c;
+    background: var(--catan-green);
+    font-family: "Cinzel", serif;
+    font-size: 0.62rem;
+}
+
+.catan-theme .flat-table th:first-child {
+    color: #f1dc9d;
+}
+
+.catan-theme .flat-table td {
+    border-color: rgba(94, 61, 31, 0.28);
+    background: rgba(255, 247, 207, 0.14);
+}
+
+.catan-theme .flat-table td:first-child {
+    color: #5b4127;
+    background: rgba(114, 74, 34, 0.1);
+}
+
+.catan-theme .score-with-color i {
+    width: 14px;
+    height: 14px;
+    border: 2px solid rgba(49, 34, 21, 0.55);
+    border-radius: 3px 3px 6px 6px;
+    box-shadow: 1px 2px 0 rgba(60, 41, 24, 0.25);
+}
+
+.catan-theme .cell-good {
+    color: #7c2d21;
+    text-decoration-color: #a64b2f;
+    text-decoration-thickness: 3px;
+}
+
+.catan-theme .footer-inner {
+    color: #f0daa0;
+    border: 4px solid #3b2517;
+    border-radius: 3px;
+    background: var(--catan-wood);
+    box-shadow: 6px 7px 0 rgba(16, 55, 71, 0.45), inset 0 0 0 2px #93623a;
+}
+
+.catan-theme .footer a {
+    color: #f2c95e;
+    border-color: #b75233;
+}
+
+@media (max-width: 700px) {
+    .game-page .game-hero {
+        margin: 8px;
+        padding-inline: 12px;
+    }
+
+    .game-page .game-section {
+        padding: 26px 18px;
+    }
+
+    .game-page .section-title {
+        max-width: calc(100% - 10px);
+        margin-left: 0;
+        font-size: 0.88rem;
+    }
+
+    .ticket-theme h1 {
+        font-size: clamp(3rem, 18vw, 5rem);
+    }
+
+    .ticket-theme .player-card {
+        padding-right: 42px;
+    }
+
+    .catan-theme h1 {
+        font-size: clamp(3.8rem, 22vw, 6rem);
+    }
+
+    .catan-tiles span {
+        width: 46px;
+        height: 53px;
+    }
+
+    .catan-theme .player-stats-grid {
+        grid-template-columns: 1fr;
     }
 }

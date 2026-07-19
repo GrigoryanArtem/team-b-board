@@ -36,7 +36,7 @@ const renderGameLinks = data => {
     const pages = { ticket_to_ride: "./ticket-to-ride.html", catan: "./catan.html" };
 
     document.getElementById("gamesGrid").innerHTML = Object.entries(data).map(([gameId, game]) => `
-        <article class="game-card">
+        <article class="game-card game-card--${gameId}">
             <div><p class="card-kicker">Board game</p><h3>${game.name}</h3></div>
             <dl class="game-card-stats">
                 <div><dt>Players</dt><dd>${Object.keys(game.players ?? {}).length}</dd></div>

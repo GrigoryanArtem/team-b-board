@@ -7,25 +7,26 @@
     <link rel="icon" href="./resources/icons/favicon-32.png" type="image/png" sizes="32x32">
     <link rel="stylesheet" href="./styles.css" />
 </head>
-<body>
-    <header class="app-header">
+<body class="game-page ticket-theme">
+    <header class="app-header game-hero ticket-hero">
         <nav class="site-nav" aria-label="Main navigation">
             <a href="./index.html">Overview</a>
             <a class="active" href="./ticket-to-ride.html">Ticket to Ride</a>
             <a href="./catan.html">Catan</a>
         </nav>
         <div class="header-content">
-            <p class="eyebrow">Team B leaderboard</p>
+            <div class="rail-emblem" aria-hidden="true"><span>TB</span></div>
+            <p class="eyebrow">Team B Railway Company</p>
             <h1>Ticket to Ride</h1>
             <p class="header-subtitle">Legends of the West</p>
             <a id="gameInfoLink" class="header-link" target="_blank" rel="noreferrer">BoardGameGeek ↗</a>
         </div>
     </header>
     <main class="container">
-        <section><h2 class="section-title">Players</h2><div id="playersGrid" class="players-grid"></div></section>
-        <section><h2 class="section-title">Best player of the year</h2><div id="bestList" class="best-grid"></div></section>
-        <section>
-            <h2 class="section-title">Yearly results</h2>
+        <section class="game-section"><h2 class="section-title"><span>01</span> Passengers</h2><div id="playersGrid" class="players-grid"></div></section>
+        <section class="game-section"><h2 class="section-title"><span>02</span> Route champions</h2><div id="bestList" class="best-grid"></div></section>
+        <section class="game-section">
+            <h2 class="section-title"><span>03</span> Railway records</h2>
             <div class="table-container"><table id="leaderboardTable" class="flat-table"></table></div>
         </section>
     </main>

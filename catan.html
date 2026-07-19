@@ -7,27 +7,29 @@
     <link rel="icon" href="./resources/icons/favicon-32.png" type="image/png" sizes="32x32">
     <link rel="stylesheet" href="./styles.css" />
 </head>
-<body>
-    <header class="app-header">
+<body class="game-page catan-theme">
+    <header class="app-header game-hero catan-hero">
         <nav class="site-nav" aria-label="Main navigation">
             <a href="./index.html">Overview</a>
             <a href="./ticket-to-ride.html">Ticket to Ride</a>
             <a class="active" href="./catan.html">Catan</a>
         </nav>
         <div class="header-content">
-            <p class="eyebrow">Team B leaderboard</p>
+            <div class="catan-tiles" aria-hidden="true">
+                <span class="tile-forest"></span><span class="tile-fields"></span><span class="tile-hills"></span><span class="tile-mountains"></span><span class="tile-pasture"></span>
+            </div>
+            <p class="eyebrow">Team B Settlers Council</p>
             <h1>Catan</h1>
-            <p class="header-subtitle">Settlements, roads, and victory points</p>
+            <p class="header-subtitle">Build. Trade. Settle. Conquer.</p>
             <a id="gameInfoLink" class="header-link" target="_blank" rel="noreferrer">BoardGameGeek ↗</a>
         </div>
     </header>
     <main class="container">
-        <section><h2 class="section-title">Player statistics</h2><div id="catanStats" class="player-stats-grid"></div></section>
-        <section><h2 class="section-title">Game winners</h2><div id="bestList" class="best-grid"></div></section>
-        <section>
-            <h2 class="section-title">Game results</h2>
+        <section class="game-section"><h2 class="section-title"><span>I</span> Settlers council</h2><div id="catanStats" class="player-stats-grid"></div></section>
+        <section class="game-section"><h2 class="section-title"><span>II</span> Victors of the island</h2><div id="bestList" class="best-grid"></div></section>
+        <section class="game-section">
+            <h2 class="section-title"><span>III</span> Chronicle of settlements</h2>
             <div class="table-container"><table id="catanTable" class="flat-table catan-table"></table></div>
-            <p class="table-note"><span class="cell-good sample-score">10</span> marks the winner; the dot shows the player's color in that game.</p>
         </section>
     </main>
     <footer class="footer"><div class="footer-inner">Made by <a href="https://github.com/GrigoryanArtem" target="_blank" rel="noreferrer">KindComrade</a></div></footer>

@@ -32,7 +32,9 @@ const renderBest = (players, years) => {
 const renderTable = (players, years) => {
     const totals = players.map(getPlayerTotal);
     const bestTotal = Math.max(...totals);
-    const head = `<thead><tr><th>Year</th>${players.map(player => `<th style="color:${player.color}">${player.name}</th>`).join("")}</tr></thead>`;
+    const head = `<thead><tr><th>Year</th>${players.map(player => `
+        <th><span class="rail-player-marker" style="--player-color:${player.color}"></span>${player.name}</th>
+    `).join("")}</tr></thead>`;
     const body = years.map(year => {
         const scores = players.map(player => Number(player.scores[year])).filter(Number.isFinite);
         const max = Math.max(...scores);
@@ -41,11 +43,11 @@ const renderTable = (players, years) => {
             const score = Number(player.scores[year]);
             if (!Number.isFinite(score)) return "<td>—</td>";
             const className = score === max ? "cell-good" : score === min ? "cell-bad" : "";
-            return `<td class="${className}" style="color:${player.color}">${score}</td>`;
+            return `<td class="${className}">${score}</td>`;
         }).join("")}</tr>`;
     }).join("");
-    const totalRow = `<tr class="total-row"><td>Total</td>${totals.map((total, index) =>
-        `<td class="${total === bestTotal ? "cell-good" : ""}" style="color:${players[index].color}">${total}</td>`
+    const totalRow = `<tr class="total-row"><td>Total</td>${totals.map(total =>
+        `<td class="${total === bestTotal ? "cell-good" : ""}">${total}</td>`
     ).join("")}</tr>`;
     document.getElementById("leaderboardTable").innerHTML = `${head}<tbody>${body}${totalRow}</tbody>`;
 };

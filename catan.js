@@ -39,10 +39,13 @@ const renderPlayerStats = stats => {
                 <div><span class="player-rank">#${index + 1}</span><h3>${entry.player.name}</h3></div>
             </div>
             <dl class="compact-stats">
-                <div><dt>Wins</dt><dd>${entry.wins}</dd></div>
-                <div><dt>Points</dt><dd>${entry.points}</dd></div>
-                <div><dt>Best</dt><dd>${entry.best}</dd></div>
-                <div><dt>Games</dt><dd>${entry.games}</dd></div>
+                <div class="wins-stat">
+                    <dt>Victories</dt>
+                    <dd><strong>${entry.wins}</strong><span>${entry.wins === 1 ? "win" : "wins"}</span></dd>
+                </div>
+                <div class="secondary-stat"><dt>Points</dt><dd>${entry.points}</dd></div>
+                <div class="secondary-stat"><dt>Best</dt><dd>${entry.best}</dd></div>
+                <div class="secondary-stat"><dt>Games</dt><dd>${entry.games}</dd></div>
             </dl>
         </article>
     `).join("");
