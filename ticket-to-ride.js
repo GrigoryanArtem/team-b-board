@@ -6,7 +6,7 @@ const getYears = (players, desc = false) => {
 const renderPlayers = players => {
     document.getElementById("playersGrid").innerHTML = players.map(player => `
         <div class="player-card" style="--accent: ${player.color}">
-            <div class="avatar"><img src="${IMG(player.id)}" alt="${player.name}"></div>
+            <div class="avatar"><img src="${IMG("ticket_to_ride", player.id)}" alt="${player.name}"></div>
             <div class="player-name">${player.name}</div>
         </div>
     `).join("");
@@ -18,7 +18,7 @@ const renderBest = (players, years) => {
         return winner ? `
             <div class="best-card">
                 <div class="best-photo">
-                    <img src="${IMG(winner.player.id)}" alt="${winner.player.name}">
+                    <img src="${IMG("ticket_to_ride", winner.player.id)}" alt="${winner.player.name}">
                     <div class="best-year">${year}</div>
                 </div>
                 <div class="best-info" style="color:${winner.player.color}">

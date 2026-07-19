@@ -35,7 +35,7 @@ const renderPlayerStats = stats => {
     document.getElementById("catanStats").innerHTML = stats.map((entry, index) => `
         <article class="player-stat-card">
             <div class="player-stat-head">
-                <div class="avatar"><img src="${IMG(entry.player.id)}" alt="${entry.player.name}"></div>
+                <div class="avatar"><img src="${IMG("catan", entry.player.id)}" alt="${entry.player.name}"></div>
                 <div><span class="player-rank">#${index + 1}</span><h3>${entry.player.name}</h3></div>
             </div>
             <dl class="compact-stats">
@@ -55,7 +55,7 @@ const renderWinners = (players, games) => {
         return winner ? `
             <article class="best-card">
                 <div class="best-photo">
-                    <img src="${IMG(winner.player.id)}" alt="${winner.player.name}">
+                    <img src="${IMG("catan", winner.player.id)}" alt="${winner.player.name}">
                     <div class="best-year">${formatDate(game.date)}</div>
                 </div>
                 <div class="best-info"><span>${winner.player.name}</span><span>${winner.score} pts</span></div>

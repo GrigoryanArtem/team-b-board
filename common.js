@@ -1,5 +1,5 @@
 const DATA_URL = "./leaderboard.json";
-const IMG = id => `./resources/ticket_to_ride/${id.replace(/[^a-z0-9]/gi, "").toLowerCase()}.png`;
+const IMG = (gameId, playerId) => `./resources/${gameId}/${playerId.replace(/[^a-z0-9]/gi, "").toLowerCase()}.png`;
 
 const loadData = async () => {
     const response = await fetch(DATA_URL);
