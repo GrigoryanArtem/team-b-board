@@ -11,7 +11,7 @@ const getCatanColor = color => CATAN_COLORS[color?.toLowerCase()] ?? color ?? "#
 
 const getCatanStats = (players, games) => {
     const stats = Object.fromEntries(players.map(player => [player.id, {
-        player, games: 0, wins: 0, points: 0, best: 0
+        player, games: 0, wins: 0, points: 0
     }]));
 
     Object.keys(games).forEach(gameKey => {
@@ -22,7 +22,6 @@ const getCatanStats = (players, games) => {
             if (!Number.isFinite(score)) return;
             stats[player.id].games += 1;
             stats[player.id].points += score;
-            stats[player.id].best = Math.max(stats[player.id].best, score);
         });
     });
 
@@ -33,20 +32,17 @@ const getCatanStats = (players, games) => {
 
 const renderPlayerStats = stats => {
     document.getElementById("catanStats").innerHTML = stats.map((entry, index) => `
-        <article class="player-stat-card">
-            <div class="player-stat-head">
+        <article class="settler-card">
+            <div class="settler-rank" aria-label="Rank ${index + 1}">${index + 1}</div>
+            <div class="settler-identity">
                 <div class="avatar"><img src="${IMG("catan", entry.player.id)}" alt="${entry.player.name}"></div>
-                <div><span class="player-rank">#${index + 1}</span><h3>${entry.player.name}</h3></div>
+                <div><span>Council member</span><h3>${entry.player.name}</h3></div>
             </div>
-            <dl class="compact-stats">
-                <div class="wins-stat">
-                    <dt>Victories</dt>
-                    <dd><strong>${entry.wins}</strong><span>${entry.wins === 1 ? "win" : "wins"}</span></dd>
-                </div>
-                <div class="secondary-stat"><dt>Points</dt><dd>${entry.points}</dd></div>
-                <div class="secondary-stat"><dt>Best</dt><dd>${entry.best}</dd></div>
-                <div class="secondary-stat"><dt>Games</dt><dd>${entry.games}</dd></div>
-            </dl>
+            <div class="settler-victories"><strong>${entry.wins}</strong><span>${entry.wins === 1 ? "victory" : "victories"}</span></div>
+            <div class="settler-details">
+                <span><strong>${entry.points}</strong> total points</span>
+                <span><strong>${entry.games}</strong> games</span>
+            </div>
         </article>
     `).join("");
 };
@@ -61,7 +57,7 @@ const renderWinners = (players, games) => {
                     <img src="${IMG("catan", winner.player.id)}" alt="${winner.player.name}">
                     <div class="best-year">${formatDate(game.date)}</div>
                 </div>
-                <div class="best-info"><span>${winner.player.name}</span><span>${winner.score} pts</span></div>
+                <div class="best-info"><span>${winner.player.name}</span></div>
             </article>
         ` : "";
     }).join("");
@@ -82,7 +78,7 @@ const renderCatanTable = (players, games) => {
                 if (!Number.isFinite(score)) return "<td>—</td>";
                 const color = getCatanColor(game.players?.[player.id]);
                 const winnerClass = winner?.player.id === player.id ? "cell-good" : "";
-                return `<td class="${winnerClass}"><span class="score-with-color"><i style="--player-color:${color}"></i>${score}</span></td>`;
+                return `<td class="${winnerClass}"><span class="score-with-color" style="--player-color:${color}">${score}</span></td>`;
             }).join("")}
         </tr>`;
     }).join("");

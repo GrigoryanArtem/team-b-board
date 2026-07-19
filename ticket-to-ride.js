@@ -33,7 +33,7 @@ const renderTable = (players, years) => {
     const totals = players.map(getPlayerTotal);
     const bestTotal = Math.max(...totals);
     const head = `<thead><tr><th>Year</th>${players.map(player => `
-        <th><span class="rail-player-marker" style="--player-color:${player.color}"></span>${player.name}</th>
+        <th style="--player-color:${player.color}"><span class="rail-player-name">${player.name}</span></th>
     `).join("")}</tr></thead>`;
     const body = years.map(year => {
         const scores = players.map(player => Number(player.scores[year])).filter(Number.isFinite);
