@@ -1,84 +1,57 @@
-const DATA_URL = "./leaderboard.json";
-const IMG = id => `./resources/${id}.png`;
-
-const loadData = async () => (await fetch(DATA_URL)).json();
-
-const parsePlayers = (raw) => Object.entries(raw).map(([key, obj]) => {
-    const { name, color, ...data } = obj;
-    return {
-        id: key.replace(/[^a-z0-9]/gi, "").toLowerCase(),
-        name: name ?? key,
-        color: color ?? "#999",
-        data
-    };
-});
-
-const getYears = (players, desc = false) => {
-    const years = [...new Set(players.flatMap(p => Object.keys(p.data).filter(y => /^\d{4}$/.test(y))))];
-    return years.sort((a, b) => desc ? b - a : a - b);
+const getRecordedRounds = game => {
+    if (game.games) return Object.keys(game.games).length;
+    return getScoreKeys(parsePlayers(game.players), /^\d{4}$/).length;
 };
 
-const renderPlayers = (players) => {
-    document.getElementById("playersGrid").innerHTML = players.map(p => `
-        <div class="player-card" style="--accent: ${p.color}">
-            <div class="avatar"><img src="${IMG(p.id)}" alt="${p.name}"></div>
-            <div class="player-name">${p.name}</div>
-        </div>
+const getGameLeader = (gameId, game) => {
+    const players = parsePlayers(game.players);
+
+    if (gameId === "catan") {
+        const wins = Object.fromEntries(players.map(player => [player.id, 0]));
+        Object.keys(game.games ?? {}).forEach(gameKey => {
+            const winner = getWinner(players, gameKey);
+            if (winner) wins[winner.player.id] += 1;
+        });
+        return [...players].sort((a, b) =>
+            wins[b.id] - wins[a.id] || getPlayerTotal(b) - getPlayerTotal(a)
+        )[0]?.name ?? "—";
+    }
+
+    return [...players].sort((a, b) => getPlayerTotal(b) - getPlayerTotal(a))[0]?.name ?? "—";
+};
+
+const renderOverviewStats = data => {
+    const games = Object.values(data);
+    const playerIds = new Set(games.flatMap(game => Object.keys(game.players ?? {})));
+    const recordedRounds = games.reduce((total, game) => total + getRecordedRounds(game), 0);
+
+    document.getElementById("overviewStats").innerHTML = `
+        <article class="stat-card"><span class="stat-value">${games.length}</span><span class="stat-label">Games</span></article>
+        <article class="stat-card"><span class="stat-value">${playerIds.size}</span><span class="stat-label">Players</span></article>
+        <article class="stat-card"><span class="stat-value">${recordedRounds}</span><span class="stat-label">Recorded rounds</span></article>
+    `;
+};
+
+const renderGameLinks = data => {
+    const pages = { ticket_to_ride: "./ticket-to-ride.html", catan: "./catan.html" };
+
+    document.getElementById("gamesGrid").innerHTML = Object.entries(data).map(([gameId, game]) => `
+        <article class="game-card">
+            <div><p class="card-kicker">Board game</p><h3>${game.name}</h3></div>
+            <dl class="game-card-stats">
+                <div><dt>Players</dt><dd>${Object.keys(game.players ?? {}).length}</dd></div>
+                <div><dt>Rounds</dt><dd>${getRecordedRounds(game)}</dd></div>
+                <div><dt>Leader</dt><dd>${getGameLeader(gameId, game)}</dd></div>
+            </dl>
+            <div class="game-card-actions">
+                <a class="primary-link" href="${pages[gameId]}">View results <span aria-hidden="true">→</span></a>
+                <a class="secondary-link" href="${game.link}" target="_blank" rel="noreferrer">BoardGameGeek ↗</a>
+            </div>
+        </article>
     `).join("");
 };
 
-const renderBest = (players, years) => {
-    document.getElementById("bestList").innerHTML = years.map(year => {
-        const best = players.reduce((prev, curr) => {
-            const val = Number(curr.data[year]);
-            return (Number.isFinite(val) && (!prev || val > prev.score)) ? { p: curr, score: val } : prev;
-        }, null);
-
-        return best ? `
-            <div class="best-card">
-                <div class="best-photo">
-                    <img src="${IMG(best.p.id)}" alt="${best.p.name}">
-                    <div class="best-year">${year}</div>
-                </div>
-                <div class="best-info" style="color:${best.p.color}">
-                    <span>${best.p.name}</span>
-                    <span>${best.score} pts</span>
-                </div>
-            </div>
-        ` : "";
-    }).join("");
-};
-
-const renderTable = (players, years) => {
-    const table = document.getElementById("leaderboardTable");
-    const totals = players.map(p => Object.values(p.data).map(Number).filter(Number.isFinite).reduce((a, b) => a + b, 0));
-    const bestTotal = Math.max(...totals);
-
-    const head = `<thead><tr><th>Year</th>${players.map(p => `<th style="color:${p.color}">${p.name}</th>`).join("")}</tr></thead>`;
-
-    const body = years.map(year => {
-        const scores = players.map(p => Number(p.data[year])).filter(Number.isFinite);
-        const [max, min] = [Math.max(...scores), Math.min(...scores)];
-
-        return `<tr><td>${year}</td>${players.map(p => {
-            const v = Number(p.data[year]);
-            if (!Number.isFinite(v)) return `<td>—</td>`;
-            const cls = v === max ? "cell-good" : v === min ? "cell-bad" : "";
-            return `<td class="${cls}" style="color:${p.color}">${v}</td>`;
-        }).join("")}</tr>`;
-    }).join("");
-
-    const totalRow = `<tr class="total-row"><td>TOTAL</td>${totals.map((t, i) =>
-        `<td class="${t === bestTotal ? 'cell-good' : ''}" style="color:${players[i].color}">${t}</td>`
-    ).join("")}</tr>`;
-
-    table.innerHTML = `${head}<tbody>${body}${totalRow}</tbody>`;
-};
-
-(async () => {
-    const data = await loadData();
-    const players = parsePlayers(data.ticket_to_ride.players);
-    renderPlayers(players);
-    renderBest(players, getYears(players, true));
-    renderTable(players, getYears(players));
-})();
+loadData().then(data => {
+    renderOverviewStats(data);
+    renderGameLinks(data);
+}).catch(showLoadError);

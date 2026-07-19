@@ -1,48 +1,37 @@
 <!doctype html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Team B Leaderboard</title>
+    <title>Team B Board Games</title>
     <link rel="icon" href="./resources/icons/favicon-32.png" type="image/png" sizes="32x32">
     <link rel="stylesheet" href="./styles.css" />
 </head>
-
 <body>
     <header class="app-header">
+        <nav class="site-nav" aria-label="Main navigation">
+            <a class="active" href="./index.html">Overview</a>
+            <a href="./ticket-to-ride.html">Ticket to Ride</a>
+            <a href="./catan.html">Catan</a>
+        </nav>
         <div class="header-content">
-            <h1>Team B Leaderboard</h1>
-            <p class="header-subtitle">Ticket to Ride: Legends of the West</p>
+            <p class="eyebrow">Team B</p>
+            <h1>Board Game Leaderboards</h1>
+            <p class="header-subtitle">Games, results, and friendly rivalries</p>
         </div>
     </header>
-
     <main class="container">
         <section>
-            <h2 class="section-title">Players</h2>
-            <div id="playersGrid" class="players-grid"></div>
+            <h2 class="section-title">Overall statistics</h2>
+            <div id="overviewStats" class="stats-grid"></div>
         </section>
-
         <section>
-            <h2 class="section-title">Best player of the year</h2>
-            <div id="bestList" class="best-grid"></div>
-        </section>
-
-        <section>
-            <h2 class="section-title">Yearly results</h2>
-            <div class="table-container">
-                <table id="leaderboardTable" class="flat-table"></table>
-            </div>
+            <h2 class="section-title">Games</h2>
+            <div id="gamesGrid" class="games-grid"></div>
         </section>
     </main>
-
-    <footer class="footer">
-        <div class="footer-inner">
-            Made by <a href="https://github.com/GrigoryanArtem" target="_blank">KindComrade</a> 2025
-        </div>
-    </footer>
-
+    <footer class="footer"><div class="footer-inner">Made by <a href="https://github.com/GrigoryanArtem" target="_blank" rel="noreferrer">KindComrade</a></div></footer>
+    <script src="./common.js"></script>
     <script src="./app.js"></script>
 </body>
-
 </html>
