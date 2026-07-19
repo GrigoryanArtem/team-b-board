@@ -1,0 +1,93 @@
+{
+    "catan": {
+        "name": "Catan",
+        "link": "https://boardgamegeek.com/boardgame/13/catan",
+        "games": {
+            "2026-07-19_1": {
+                "date": "2026-07-19",
+                "name": "2026-07-19 game-1",
+                "dlc": [],
+                "players": {
+                    "kate": "red",
+                    "vlad": "orange",
+                    "ira": "white",
+                    "artem": "blue"
+                }
+            }
+        },
+        "players": {
+            "kate": {
+                "name": "Katherine the Greatest",
+                "2026-07-19_1": 6
+            },
+            "artem": {
+                "name": "Artem",
+                "2026-07-19_1": 4
+            },
+            "vlad": {
+                "name": "VlaDick",
+                "2026-07-19_1": 10
+            },
+            "ira": {
+                "name": "Ira",
+                "2026-07-19_1": 5
+            }
+        }
+    },
+    "ticket_to_ride": {
+        "name": "Ticket to Ride: Legends of the West",
+        "link": "https://boardgamegeek.com/boardgame/390092/ticket-to-ride-legacy-legends-of-the-west",
+        "players": {
+            "kate": {
+                "name": "Katherine the Greatest",
+                "color": "#2FA36B",
+                "1865": 28,
+                "1868": 26,
+                "1871": 43,
+                "1874": 35,
+                "1877": 57,
+                "1880": 37
+            },
+            "artem": {
+                "name": "Artem",
+                "color": "#C94A4A",
+                "1865": 35,
+                "1868": 36,
+                "1871": 44,
+                "1874": 31,
+                "1877": 44,
+                "1880": 67
+            },
+            "yarik": {
+                "name": "Yarik",
+                "color": "#2F2F2F",
+                "1865": 36,
+                "1868": 41,
+                "1871": 39,
+                "1874": 43,
+                "1877": 35,
+                "1880": 42
+            },
+            "vlad": {
+                "name": "VlaDick",
+                "color": "#3A6EA5",
+                "1865": 16,
+                "1868": 25,
+                "1871": 36,
+                "1874": 43,
+                "1877": 44,
+                "1880": 49
+            },
+            "ira": {
+                "name": "Ira",
+                "color": "#E1B12C",
+                "1865": 26,
+                "1868": 5,
+                "1871": 57,
+                "1874": 42,
+                "1877": 47,
+                "1880": 38
+            }
+        }
+    }
+}
