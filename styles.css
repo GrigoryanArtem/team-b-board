@@ -447,15 +447,34 @@ h1 {
     width: 190px;
 }
 
+.catan-table td:first-child {
+    white-space: normal;
+}
+
+.catan-table thead th:not(:first-child) {
+    overflow-wrap: anywhere;
+    line-height: 1.3;
+    white-space: normal;
+}
+
 .game-name,
 .table-secondary {
     display: block;
+}
+
+.game-name {
+    overflow-wrap: anywhere;
+    line-height: 1.35;
 }
 
 .table-secondary {
     color: var(--muted);
     font-size: 0.68rem;
     font-weight: 500;
+}
+
+.table-dlc + .table-dlc {
+    margin-top: 2px;
 }
 
 .score-with-color {
@@ -544,7 +563,7 @@ h1 {
     height: 82px;
     opacity: 0.22;
     background: #28744d;
-    clip-path: polygon(25% 6.7%, 75% 6.7%, 100% 50%, 75% 93.3%, 25% 93.3%, 0 50%);
+    clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
 }
 
 .game-card--catan::before {
@@ -603,12 +622,14 @@ h1 {
 }
 
 .game-page .container {
+    width: 100%;
     max-width: 1200px;
     gap: 52px;
 }
 
 .game-page .game-section {
     position: relative;
+    min-width: 0;
     padding: 32px;
 }
 
@@ -964,9 +985,8 @@ h1 {
     background-image:
         radial-gradient(circle at 15% 22%, rgba(255, 255, 255, 0.14) 0 2px, transparent 3px),
         radial-gradient(circle at 72% 68%, rgba(255, 255, 255, 0.11) 0 3px, transparent 4px),
-        linear-gradient(30deg, rgba(255, 255, 255, 0.035) 12%, transparent 12.5%, transparent 87%, rgba(255, 255, 255, 0.035) 87.5%),
-        linear-gradient(150deg, rgba(255, 255, 255, 0.035) 12%, transparent 12.5%, transparent 87%, rgba(255, 255, 255, 0.035) 87.5%);
-    background-size: 62px 62px, 83px 83px, 72px 126px, 72px 126px;
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='72' height='72' viewBox='0 0 72 72'%3E%3Cpath d='M36 1L71 36L36 71L1 36Z' fill='none' stroke='%23fff' stroke-opacity='.065' stroke-width='2'/%3E%3C/svg%3E");
+    background-size: 62px 62px, 83px 83px, 72px 72px;
 }
 
 .catan-theme .catan-hero {
@@ -990,7 +1010,7 @@ h1 {
     width: 250px;
     height: 286px;
     opacity: 0.11;
-    clip-path: polygon(25% 6.7%, 75% 6.7%, 100% 50%, 75% 93.3%, 25% 93.3%, 0 50%);
+    clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
 }
 
 .catan-theme .catan-hero::before {
@@ -1077,7 +1097,7 @@ h1 {
     height: 64px;
     margin-left: -8px;
     border: 0;
-    clip-path: polygon(25% 6.7%, 75% 6.7%, 100% 50%, 75% 93.3%, 25% 93.3%, 0 50%);
+    clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
     box-shadow: inset 0 0 18px rgba(0, 0, 0, 0.25);
 }
 
@@ -1111,7 +1131,7 @@ h1 {
     height: 44px;
     opacity: 0.32;
     background: var(--catan-green);
-    clip-path: polygon(25% 6.7%, 75% 6.7%, 100% 50%, 75% 93.3%, 25% 93.3%, 0 50%);
+    clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
 }
 
 .catan-theme .section-title {
@@ -1134,7 +1154,7 @@ h1 {
     height: 38px;
     color: #3c2817;
     background: var(--catan-wheat);
-    clip-path: polygon(25% 6.7%, 75% 6.7%, 100% 50%, 75% 93.3%, 25% 93.3%, 0 50%);
+    clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
     font-size: 0.7rem;
 }
 
@@ -1150,7 +1170,7 @@ h1 {
     grid-template-columns: 44px minmax(0, 1fr) auto;
     align-items: center;
     gap: 16px;
-    overflow: hidden;
+    overflow: visible;
     border: 5px solid var(--catan-wood);
     border-top: 9px solid var(--catan-wood);
     border-radius: 3px;
@@ -1161,17 +1181,28 @@ h1 {
 }
 
 .catan-theme .settler-rank {
+    position: relative;
+    isolation: isolate;
     width: 44px;
     height: 50px;
     display: grid;
     place-items: center;
     color: #3b2818;
-    border: 2px solid #6f4a28;
-    background: #d2b371;
-    clip-path: polygon(25% 6.7%, 75% 6.7%, 100% 50%, 75% 93.3%, 25% 93.3%, 0 50%);
+    border: 0;
+    background: #6f4a28;
+    clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
     font-family: "Cinzel", serif;
     font-size: 1.1rem;
     font-weight: 800;
+}
+
+.catan-theme .settler-rank::before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    inset: 2px;
+    background: #d2b371;
+    clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
 }
 
 .catan-theme .settler-identity {
@@ -1181,13 +1212,79 @@ h1 {
     gap: 13px;
 }
 
+.catan-theme .settler-identity > div:last-child {
+    min-width: 0;
+}
+
 .catan-theme .settler-identity .avatar {
+    position: relative;
     width: 58px;
     height: 58px;
+    flex-shrink: 0;
     border: 3px solid var(--catan-wood);
     border-radius: 50%;
     background: #f0dda6;
     box-shadow: 0 0 0 2px #c29a55;
+}
+
+.catan-theme .settler-crown {
+    position: absolute;
+    z-index: 2;
+    top: -18px;
+    left: 50%;
+    width: 34px;
+    height: 24px;
+    overflow: visible;
+    filter:
+        drop-shadow(1px 2px 0 #6f4a28)
+        drop-shadow(0 0 2px rgba(255, 244, 180, 0.65))
+        drop-shadow(0 0 6px rgba(255, 218, 91, 0.35))
+        drop-shadow(0 0 12px rgba(255, 218, 91, 0.18))
+        drop-shadow(0 0 18px rgba(255, 218, 91, 0.08));
+    transform: translateX(-50%);
+    transform-origin: 50% 100%;
+    animation: settler-crown-glow 2.6s ease-in-out infinite;
+}
+
+.catan-theme .settler-crown path:first-of-type {
+    fill: #f0c84f;
+    stroke: #6f4a28;
+    stroke-linejoin: round;
+    stroke-width: 2;
+}
+
+.catan-theme .settler-crown path:last-of-type {
+    fill: none;
+    stroke: #6f4a28;
+    stroke-linecap: round;
+    stroke-width: 2;
+}
+
+@keyframes settler-crown-glow {
+    0%, 100% {
+        filter:
+            drop-shadow(1px 2px 0 #6f4a28)
+            drop-shadow(0 0 2px rgba(255, 244, 180, 0.65))
+            drop-shadow(0 0 6px rgba(255, 218, 91, 0.35))
+            drop-shadow(0 0 12px rgba(255, 218, 91, 0.18))
+            drop-shadow(0 0 18px rgba(255, 218, 91, 0.08));
+    }
+    45% {
+        filter:
+            drop-shadow(1px 2px 0 #6f4a28)
+            drop-shadow(0 0 6px rgba(255, 248, 199, 1))
+            drop-shadow(0 0 13px rgba(255, 218, 91, 1))
+            drop-shadow(0 0 25px rgba(255, 218, 91, 0.82))
+            drop-shadow(0 0 40px rgba(255, 218, 91, 0.48));
+    }
+    65% {
+        filter:
+            drop-shadow(1px 2px 0 #6f4a28)
+            drop-shadow(0 0 4px rgba(255, 244, 180, 0.82))
+            drop-shadow(0 0 18px rgba(255, 218, 91, 0.88))
+            drop-shadow(0 0 34px rgba(255, 218, 91, 0.7))
+            drop-shadow(0 0 52px rgba(255, 218, 91, 0.38));
+    }
 }
 
 .catan-theme .settler-identity .avatar img {
@@ -1205,12 +1302,11 @@ h1 {
 
 .catan-theme .settler-identity h3 {
     margin: 2px 0 0;
-    overflow: hidden;
     color: #302417;
     font-family: "Cinzel", serif;
     font-size: 1.02rem;
     line-height: 1.15;
-    text-overflow: ellipsis;
+    overflow-wrap: anywhere;
 }
 
 .catan-theme .settler-victories {
@@ -1240,7 +1336,7 @@ h1 {
 }
 
 .catan-theme .settler-details {
-    grid-column: 2 / -1;
+    grid-column: 1 / -1;
     padding-top: 11px;
     display: flex;
     gap: 18px;
@@ -1254,12 +1350,106 @@ h1 {
     font-size: 0.78rem;
 }
 
+.catan-theme .settler-chart {
+    min-width: 0;
+    grid-column: 1 / -1;
+    padding-top: 4px;
+}
+
+.catan-theme .settler-chart-heading {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    color: #715732;
+    font-family: "Cinzel", serif;
+    font-size: 0.55rem;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+.catan-theme .settler-chart-heading strong {
+    color: #44301d;
+    white-space: nowrap;
+}
+
+.catan-theme .settler-chart svg {
+    width: min(100%, 460px);
+    height: auto;
+    margin: 4px auto 0;
+    display: block;
+    border-radius: 2px;
+    background: transparent;
+}
+
+.catan-theme .settler-chart-area {
+    fill: rgba(40, 107, 67, 0.14);
+}
+
+.catan-theme .settler-chart-grid {
+    stroke: rgba(75, 47, 26, 0.18);
+    stroke-dasharray: 3 4;
+    vector-effect: non-scaling-stroke;
+}
+
+.catan-theme .settler-chart-line {
+    fill: none;
+    stroke: var(--catan-green);
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 2.5;
+    vector-effect: non-scaling-stroke;
+}
+
+.catan-theme .settler-chart-dot {
+    fill: #d2b371;
+    stroke: #3c2818;
+    stroke-width: 1.5;
+    vector-effect: non-scaling-stroke;
+}
+
+.catan-theme .settler-chart-dot.is-latest {
+    fill: #b75233;
+}
+
 .catan-theme .best-card {
+    --frame-angle: -0.8deg;
     padding: 10px;
     border: 8px solid var(--catan-wood);
     border-radius: 3px;
     background: #d4aa55;
     box-shadow: 8px 10px 0 rgba(44, 37, 24, 0.25), inset 0 0 0 3px #a97838;
+    transform: rotate(var(--frame-angle));
+    transform-origin: 50% 8%;
+}
+
+.catan-theme .best-card:nth-child(3n + 2) {
+    --frame-angle: 1deg;
+}
+
+.catan-theme .best-card:nth-child(3n) {
+    --frame-angle: -0.35deg;
+}
+
+.catan-theme .best-card:hover {
+    animation: catan-frame-wobble 600ms ease-in-out;
+}
+
+@keyframes catan-frame-wobble {
+    0%, 100% { transform: rotate(var(--frame-angle)); }
+    25% { transform: rotate(calc(var(--frame-angle) + 1.5deg)); }
+    50% { transform: rotate(calc(var(--frame-angle) - 1.2deg)); }
+    75% { transform: rotate(calc(var(--frame-angle) + 0.6deg)); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .catan-theme .best-card:hover {
+        animation: none;
+    }
+
+    .catan-theme .settler-crown {
+        animation: none;
+    }
 }
 
 .catan-theme .best-photo {
@@ -1286,6 +1476,12 @@ h1 {
     color: #372719;
     font-family: "Cinzel", serif;
     font-size: 0.88rem;
+}
+
+.catan-theme .best-info span {
+    max-width: 100%;
+    overflow-wrap: anywhere;
+    text-align: center;
 }
 
 .catan-theme .table-container {
@@ -1327,15 +1523,40 @@ h1 {
     background: rgba(114, 74, 34, 0.1);
 }
 
+.catan-theme .flat-table .catan-date-row th {
+    padding: 10px 16px;
+    color: #44301d;
+    border-top: 3px solid #3f2b1c;
+    border-bottom: 2px solid rgba(94, 61, 31, 0.45);
+    background: #d2b371;
+    font-size: 0.72rem;
+    letter-spacing: 0.07em;
+    text-align: left;
+}
+
 .catan-theme .score-with-color {
     min-width: 58px;
     padding: 6px 10px 5px;
+    flex-direction: column;
     border: 2px solid rgba(73, 47, 27, 0.45);
     border-bottom: 6px solid var(--player-color);
     border-radius: 3px;
     background: rgba(255, 240, 190, 0.52);
     box-shadow: 0 2px 0 #4a2f1c;
     font-size: 1rem;
+}
+
+.catan-theme .score-with-color strong {
+    font-size: 1rem;
+    line-height: 1;
+}
+
+.catan-theme .score-with-color small {
+    margin-top: 4px;
+    color: #715732;
+    font-size: 0.62rem;
+    font-weight: 700;
+    line-height: 1;
 }
 
 .catan-theme .cell-good {

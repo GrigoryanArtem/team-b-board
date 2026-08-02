@@ -5,7 +5,8 @@
         "games": {
             "2026-07-19_1": {
                 "date": "2026-07-19",
-                "name": "2026-07-19 game-1",
+                "name": "Meet the Game",
+                "target": 10,
                 "dlc": [],
                 "players": {
                     "kate": "red",
@@ -16,7 +17,8 @@
             },
             "2026-07-25_1": {
                 "date": "2026-07-25",
-                "name": "2026-07-25 game-1",
+                "name": "Hurry-Up Game",
+                "target": 10,
                 "dlc": [],
                 "players": {
                     "kate": "orange",
@@ -27,21 +29,28 @@
             },
             "2026-08-02_1": {
                 "date": "2026-08-02",
-                "name": "2026-08-02 game-1",
-                "dlc": [ "Traders & Barbarians" ],
+                "name": "Dice Gone Wild",
+                "target": 13,
+                "dlc": [
+                    "Traders & Barbarians"
+                ],
                 "players": {
                     "kate": "white",
-                    "vlad": "red",                    
+                    "vlad": "red",
                     "artem": "orange"
                 }
             },
             "2026-08-02_2": {
                 "date": "2026-08-02",
-                "name": "2026-08-02 game-2",
-                "dlc": [ "Traders & Barbarians", "Event Cards" ],
+                "name": "Rise of the Justice Cards",
+                "target": 13,
+                "dlc": [
+                    "Traders & Barbarians",
+                    "Event Cards"
+                ],
                 "players": {
                     "kate": "white",
-                    "vlad": "red",                    
+                    "vlad": "red",
                     "artem": "orange"
                 }
             }
