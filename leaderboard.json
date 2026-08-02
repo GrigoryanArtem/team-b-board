@@ -24,23 +24,49 @@
                     "ira": "red",
                     "artem": "blue"
                 }
+            },
+            "2026-08-02_1": {
+                "date": "2026-08-02",
+                "name": "2026-08-02 game-1",
+                "dlc": [ "Traders & Barbarians" ],
+                "players": {
+                    "kate": "white",
+                    "vlad": "red",                    
+                    "artem": "orange"
+                }
+            },
+            "2026-08-02_2": {
+                "date": "2026-08-02",
+                "name": "2026-08-02 game-2",
+                "dlc": [ "Traders & Barbarians", "Event Cards" ],
+                "players": {
+                    "kate": "white",
+                    "vlad": "red",                    
+                    "artem": "orange"
+                }
             }
         },
         "players": {
             "kate": {
                 "name": "Katherine the Greatest",
                 "2026-07-19_1": 6,
-                "2026-07-25_1": 7
+                "2026-07-25_1": 7,
+                "2026-08-02_1": 13,
+                "2026-08-02_2": 7
             },
             "artem": {
                 "name": "Artem",
                 "2026-07-19_1": 4,
-                "2026-07-25_1": 7
+                "2026-07-25_1": 7,
+                "2026-08-02_1": 7,
+                "2026-08-02_2": 13
             },
             "vlad": {
                 "name": "VlaDick",
                 "2026-07-19_1": 10,
-                "2026-07-25_1": 10
+                "2026-07-25_1": 10,
+                "2026-08-02_1": 12,
+                "2026-08-02_2": 8
             },
             "ira": {
                 "name": "Ira",
