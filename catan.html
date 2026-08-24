@@ -31,6 +31,18 @@
             <div class="table-container"><table id="catanTable" class="flat-table catan-table"></table></div>
         </section>
     </main>
+    <dialog id="catanGameDialog" class="catan-game-dialog" aria-labelledby="catanGameDialogTitle">
+        <div class="catan-dialog-panel">
+            <header class="catan-dialog-header">
+                <div>
+                    <p id="catanGameDialogDate" class="catan-dialog-date"></p>
+                    <h2 id="catanGameDialogTitle">Game details</h2>
+                </div>
+                <button class="catan-dialog-close" type="button" aria-label="Close game details">&times;</button>
+            </header>
+            <div id="catanGameDialogContent"></div>
+        </div>
+    </dialog>
     <footer class="footer"><div class="footer-inner">Made by <a href="https://github.com/GrigoryanArtem" target="_blank" rel="noreferrer">KindComrade</a></div></footer>
     <script src="./common.js"></script>
     <script src="./catan.js"></script>

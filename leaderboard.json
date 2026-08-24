@@ -59,14 +59,73 @@
                 "name": "New faces in the market",
                 "target": 13,
                 "dlc": [
-                    "Traders & Barbarians"                    
+                    "Traders & Barbarians"
                 ],
                 "players": {
                     "kate": "orange",
                     "ira": "red",
                     "vlad": "white",
                     "artem": "blue"
-                }
+                },
+                "order": [
+                    "ira",
+                    "vlad",
+                    "artem",
+                    "kate"
+                ],
+                "skipped": [
+                    2,
+                    12
+                ],
+                "dices": [
+                    8,
+                    7,
+                    6,
+                    4,
+                    2,
+                    8,
+                    8,
+                    7,
+                    8,
+                    7,
+                    11,
+                    7,
+                    7,
+                    11,
+                    12,
+                    7,
+                    5,
+                    10,
+                    3,
+                    10,
+                    3,
+                    4,
+                    7,
+                    6,
+                    4,
+                    2,
+                    5,
+                    12,
+                    6,
+                    9,
+                    7,
+                    9,
+                    7,
+                    11,
+                    6,
+                    11,
+                    6,
+                    3,
+                    6,
+                    9,
+                    8,
+                    10,
+                    6,
+                    9,
+                    12,
+                    6,
+                    9
+                ]
             }
         },
         "players": {

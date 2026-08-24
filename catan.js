@@ -163,12 +163,19 @@ const renderCatanTable = (players, games) => {
         const dlc = Array.isArray(game.dlc) && game.dlc.length
             ? game.dlc.map(name => `<span class="table-secondary table-dlc">${name}</span>`).join("")
             : "";
+        const hasGameDetails = Array.isArray(game.order) && game.order.length > 0
+            && Array.isArray(game.dices) && game.dices.length > 0;
+        const gameName = hasGameDetails
+            ? `<button class="game-name catan-details-trigger" type="button" data-catan-game="${gameKey}" aria-label="View dice and turns for ${game.name}">
+                    <span>${game.name}</span><i class="catan-details-indicator" aria-hidden="true"></i>
+                </button>`
+            : `<span class="game-name">${game.name}</span>`;
         const dateRow = game.date !== previousDate
             ? `<tr class="catan-date-row"><th colspan="${players.length + 1}" scope="rowgroup">${formatDate(game.date)}</th></tr>`
             : "";
         previousDate = game.date;
         return `${dateRow}<tr>
-            <td><span class="game-name">${game.name}</span>${dlc}</td>
+            <td>${gameName}${dlc}</td>
             ${players.map(player => {
                 const score = Number(player.scores[gameKey]);
                 if (!Number.isFinite(score)) return "<td>—</td>";
@@ -183,6 +190,195 @@ const renderCatanTable = (players, games) => {
     document.getElementById("catanTable").innerHTML = `${head}<tbody>${body}</tbody>`;
 };
 
+const getCatanTurns = game => {
+    const order = Array.isArray(game.order) ? game.order : [];
+    const skipped = new Set((Array.isArray(game.skipped) ? game.skipped : []).map(Number));
+    const turns = [];
+    let pendingRolls = [];
+
+    (Array.isArray(game.dices) ? game.dices : []).forEach(rawRoll => {
+        const roll = Number(rawRoll);
+        if (!Number.isFinite(roll)) return;
+
+        pendingRolls.push(roll);
+        if (skipped.has(roll)) return;
+
+        const turnIndex = turns.length;
+        turns.push({
+            number: turnIndex + 1,
+            round: Math.floor(turnIndex / order.length) + 1,
+            playerId: order[turnIndex % order.length],
+            rolls: pendingRolls
+        });
+        pendingRolls = [];
+    });
+
+    return { turns, pendingRolls, skipped };
+};
+
+const renderDiceHistogram = (game, skipped) => {
+    const rolls = (Array.isArray(game.dices) ? game.dices : []).map(Number).filter(Number.isFinite);
+    const counts = Object.fromEntries(Array.from({ length: 11 }, (_, index) => [index + 2, 0]));
+    rolls.forEach(roll => {
+        if (Object.hasOwn(counts, roll)) counts[roll] += 1;
+    });
+    const maxCount = Math.max(1, ...Object.values(counts));
+    const chartLabel = Object.entries(counts).map(([roll, count]) => `${roll}: ${count}`).join(", ");
+
+    return `
+        <section class="catan-dialog-section">
+            <div class="catan-dialog-section-heading">
+                <h3>Dice histogram</h3>
+                <span>All rolls, including rerolls</span>
+            </div>
+            <div class="dice-histogram-scroll">
+                <div class="dice-histogram" role="img" aria-label="Dice roll counts. ${chartLabel}">
+                    ${Object.entries(counts).map(([roll, count]) => {
+                        const isSkipped = skipped.has(Number(roll));
+                        return `
+                            <div class="dice-histogram-column${isSkipped ? " is-rerolled" : ""}">
+                                <div class="dice-histogram-track">
+                                    <span class="dice-histogram-bar" style="--dice-bar-height:${count / maxCount * 100}%">
+                                        ${count > 0 ? `<b>${count}</b>` : ""}
+                                    </span>
+                                </div>
+                                <strong>${roll}</strong>
+                                <small>${isSkipped ? "reroll" : ""}</small>
+                            </div>
+                        `;
+                    }).join("")}
+                </div>
+            </div>
+        </section>
+    `;
+};
+
+const renderRollChain = (rolls, skipped) => rolls.map((roll, index) => `
+    <span class="turn-roll${skipped.has(roll) ? " is-rerolled" : ""}" title="${skipped.has(roll) ? "Rerolled" : "Final roll"}">${roll}</span>
+    ${index < rolls.length - 1 ? `<span class="turn-roll-arrow" aria-hidden="true">&#8594;</span>` : ""}
+`).join("");
+
+const renderPlayerDiceStats = (players, game, turns, skipped) => {
+    const playersById = Object.fromEntries(players.map(player => [player.id, player]));
+    const orderedPlayerIds = [...new Set(game.order)];
+
+    return `
+        <section class="catan-dialog-section">
+            <div class="catan-dialog-section-heading">
+                <h3>Rolls by player</h3>
+                <span>Rerolls belong to the player whose turn it was</span>
+            </div>
+            <div class="player-dice-stats">
+                ${orderedPlayerIds.map(playerId => {
+                    const playerTurns = turns.filter(turn => turn.playerId === playerId);
+                    const rolls = playerTurns.flatMap(turn => turn.rolls);
+                    const rerolls = rolls.filter(roll => skipped.has(roll)).length;
+                    const counts = Object.fromEntries(Array.from({ length: 11 }, (_, index) => [index + 2, 0]));
+                    rolls.forEach(roll => {
+                        if (Object.hasOwn(counts, roll)) counts[roll] += 1;
+                    });
+                    const maxCount = Math.max(1, ...Object.values(counts));
+                    const playerName = playersById[playerId]?.name ?? playerId;
+                    const playerColor = getCatanColor(game.players?.[playerId]);
+
+                    return `
+                        <article class="player-dice-card" style="--player-color:${playerColor}">
+                            <div class="player-dice-card-header">
+                                <h4><i></i>${playerName}</h4>
+                                <p><strong>${playerTurns.length}</strong> turns · <strong>${rerolls}</strong> rerolls</p>
+                            </div>
+                            <div class="player-dice-distribution" aria-label="${playerName} dice distribution">
+                                ${Object.entries(counts).map(([roll, count]) => `
+                                    <span class="player-dice-column${skipped.has(Number(roll)) ? " is-rerolled" : ""}">
+                                        <i><em style="--player-dice-height:${count / maxCount * 100}%">
+                                            ${count > 0 ? `<b>${count}</b>` : ""}
+                                        </em></i>
+                                        <small>${roll}</small>
+                                    </span>
+                                `).join("")}
+                            </div>
+                        </article>
+                    `;
+                }).join("")}
+            </div>
+        </section>
+    `;
+};
+
+const renderCatanGameDetails = (players, game) => {
+    const playersById = Object.fromEntries(players.map(player => [player.id, player]));
+    const { turns, pendingRolls, skipped } = getCatanTurns(game);
+    const rerolls = (Array.isArray(game.dices) ? game.dices : []).map(Number).filter(roll => skipped.has(roll)).length;
+
+    return `
+        <div class="catan-game-summary" aria-label="Game roll summary">
+            <span><strong>${game.dices.length}</strong> rolls</span>
+            <span><strong>${turns.length}</strong> turns</span>
+            <span><strong>${rerolls}</strong> rerolls</span>
+        </div>
+        ${renderDiceHistogram(game, skipped)}
+        ${renderPlayerDiceStats(players, game, turns, skipped)}
+        <section class="catan-dialog-section">
+            <div class="catan-dialog-section-heading">
+                <h3>Turn history</h3>
+                <span>Skipped results do not advance the turn</span>
+            </div>
+            <ol class="catan-turn-list">
+                ${turns.map((turn, index) => {
+                    const player = playersById[turn.playerId];
+                    const playerName = player?.name ?? turn.playerId;
+                    const playerColor = getCatanColor(game.players?.[turn.playerId]);
+                    return `
+                        ${index === 0 || turn.round !== turns[index - 1].round
+                            ? `<li class="turn-round-separator"><span>Round ${turn.round}</span></li>`
+                            : ""}
+                        <li class="catan-turn-row">
+                            <span class="turn-number">#${turn.number}</span>
+                            <span class="turn-player"><i style="--player-color:${playerColor}"></i>${playerName}</span>
+                            <span class="turn-rolls" aria-label="Rolls: ${turn.rolls.join(", ")}">${renderRollChain(turn.rolls, skipped)}</span>
+                        </li>
+                    `;
+                }).join("")}
+                ${pendingRolls.length ? `
+                    <li class="catan-turn-row is-incomplete">
+                        <span class="turn-number">#${turns.length + 1}</span>
+                        <span class="turn-player">Waiting for final roll</span>
+                        <span class="turn-rolls">${renderRollChain(pendingRolls, skipped)}</span>
+                    </li>
+                ` : ""}
+            </ol>
+        </section>
+    `;
+};
+
+const setupCatanGameDialog = (players, games) => {
+    const dialog = document.getElementById("catanGameDialog");
+    const content = document.getElementById("catanGameDialogContent");
+    const title = document.getElementById("catanGameDialogTitle");
+    const date = document.getElementById("catanGameDialogDate");
+    const closeButton = dialog.querySelector(".catan-dialog-close");
+
+    document.getElementById("catanTable").addEventListener("click", event => {
+        const button = event.target.closest("[data-catan-game]");
+        if (!button) return;
+
+        const game = games[button.dataset.catanGame];
+        if (!game) return;
+
+        title.textContent = game.name;
+        date.textContent = formatDate(game.date);
+        content.innerHTML = renderCatanGameDetails(players, game);
+        dialog.showModal();
+        document.body.classList.add("has-open-dialog");
+    });
+
+    closeButton.addEventListener("click", () => dialog.close());
+    dialog.addEventListener("click", event => {
+        if (event.target === dialog) dialog.close();
+    });
+    dialog.addEventListener("close", () => document.body.classList.remove("has-open-dialog"));
+};
+
 loadData().then(data => {
     const game = data.catan;
     const players = parsePlayers(game.players);
@@ -190,4 +386,5 @@ loadData().then(data => {
     renderPlayerStats(getCatanStats(players, game.games));
     renderWinners(players, game.games);
     renderCatanTable(players, game.games);
+    setupCatanGameDialog(players, game.games);
 }).catch(showLoadError);
