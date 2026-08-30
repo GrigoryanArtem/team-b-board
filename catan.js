@@ -11,6 +11,8 @@ const getCatanColor = color => CATAN_COLORS[color?.toLowerCase()] ?? color ?? "#
 
 const RECENT_GAMES_WITH_FULL_WEIGHT = 5;
 const OLDER_GAME_DECAY = 0.9;
+const DICE_SUMS = Array.from({ length: 11 }, (_, index) => index + 2);
+const EXPECTED_2D6_WEIGHTS = [1, 2, 3, 4, 5, 6, 5, 4, 3, 2, 1];
 
 const getPerformance = (score, target) => {
     const numericScore = Number(score);
@@ -216,31 +218,40 @@ const getCatanTurns = game => {
     return { turns, pendingRolls, skipped };
 };
 
-const renderDiceHistogram = (game, skipped) => {
+const renderDiceHistogram = (game, skipped, options = {}) => {
     const rolls = (Array.isArray(game.dices) ? game.dices : []).map(Number).filter(Number.isFinite);
-    const counts = Object.fromEntries(Array.from({ length: 11 }, (_, index) => [index + 2, 0]));
+    const counts = Object.fromEntries(DICE_SUMS.map(roll => [roll, 0]));
     rolls.forEach(roll => {
         if (Object.hasOwn(counts, roll)) counts[roll] += 1;
     });
-    const maxCount = Math.max(1, ...Object.values(counts));
+    const expectedCounts = options.expectedCounts ?? null;
+    const maxCount = Math.max(
+        1,
+        ...Object.values(counts),
+        ...(expectedCounts ? Object.values(expectedCounts) : [])
+    );
     const chartLabel = Object.entries(counts).map(([roll, count]) => `${roll}: ${count}`).join(", ");
 
     return `
         <section class="catan-dialog-section">
             <div class="catan-dialog-section-heading">
-                <h3>Dice histogram</h3>
-                <span>All rolls, including rerolls</span>
+                <h3>${options.title ?? "Dice histogram"}</h3>
+                <span>${options.subtitle ?? "All rolls, including rerolls"}</span>
             </div>
             <div class="dice-histogram-scroll">
                 <div class="dice-histogram" role="img" aria-label="Dice roll counts. ${chartLabel}">
                     ${Object.entries(counts).map(([roll, count]) => {
                         const isSkipped = skipped.has(Number(roll));
+                        const expectedCount = expectedCounts?.[roll];
                         return `
                             <div class="dice-histogram-column${isSkipped ? " is-rerolled" : ""}">
                                 <div class="dice-histogram-track">
                                     <span class="dice-histogram-bar" style="--dice-bar-height:${count / maxCount * 100}%">
                                         ${count > 0 ? `<b>${count}</b>` : ""}
                                     </span>
+                                    ${Number.isFinite(expectedCount) ? `
+                                        <span class="dice-expected-marker" style="--dice-expected-height:${expectedCount / maxCount * 100}%" title="Expected: ${expectedCount.toFixed(1)}"></span>
+                                    ` : ""}
                                 </div>
                                 <strong>${roll}</strong>
                                 <small>${isSkipped ? "reroll" : ""}</small>
@@ -249,7 +260,55 @@ const renderDiceHistogram = (game, skipped) => {
                     }).join("")}
                 </div>
             </div>
+            ${expectedCounts ? `
+                <div class="dice-histogram-legend" aria-hidden="true">
+                    <span class="is-observed">Observed</span>
+                    <span class="is-expected">Expected for 2d6</span>
+                </div>
+            ` : ""}
         </section>
+    `;
+};
+
+const renderDiceCalibration = games => {
+    const gamesWithDice = Object.values(games).filter(game => Array.isArray(game.dices) && game.dices.length > 0);
+    const rolls = gamesWithDice.flatMap(game => game.dices).map(Number)
+        .filter(roll => Number.isFinite(roll) && roll >= 2 && roll <= 12);
+    const observedCounts = Object.fromEntries(DICE_SUMS.map(roll => [roll, 0]));
+    rolls.forEach(roll => observedCounts[roll] += 1);
+
+    const expectedCounts = Object.fromEntries(DICE_SUMS.map((roll, index) => [
+        roll,
+        rolls.length * EXPECTED_2D6_WEIGHTS[index] / 36
+    ]));
+    const average = rolls.length
+        ? rolls.reduce((total, roll) => total + roll, 0) / rolls.length
+        : 0;
+    const distributionDistance = rolls.length
+        ? DICE_SUMS.reduce((distance, roll, index) =>
+            distance + Math.abs(observedCounts[roll] / rolls.length - EXPECTED_2D6_WEIGHTS[index] / 36), 0) / 2
+        : 1;
+    const distributionMatch = Math.max(0, (1 - distributionDistance) * 100);
+    const sampleLabel = rolls.length < 100 ? "Early estimate" : rolls.length < 500 ? "Growing sample" : "Strong sample";
+
+    return `
+        <div class="catan-calibration-summary" aria-label="Overall dice calibration summary">
+            <span><strong>${rolls.length}</strong><small>recorded rolls</small></span>
+            <span><strong>${average.toFixed(2)}</strong><small>average · expected 7.00</small></span>
+            <span><strong>${distributionMatch.toFixed(0)}%</strong><small>distribution match</small></span>
+        </div>
+        ${renderDiceHistogram(
+            { dices: rolls },
+            new Set(),
+            {
+                title: "Observed vs expected",
+                subtitle: `${gamesWithDice.length} recorded ${gamesWithDice.length === 1 ? "game" : "games"} · ${sampleLabel}`,
+                expectedCounts
+            }
+        )}
+        <p class="catan-calibration-note">
+            The match score compares the observed frequencies with the mathematical 2d6 distribution. A larger sample gives a more reliable calibration estimate; natural variation is expected in short histories.
+        </p>
     `;
 };
 
@@ -357,6 +416,15 @@ const setupCatanGameDialog = (players, games) => {
     const title = document.getElementById("catanGameDialogTitle");
     const date = document.getElementById("catanGameDialogDate");
     const closeButton = dialog.querySelector(".catan-dialog-close");
+    const summaryButton = document.getElementById("catanDiceSummaryButton");
+
+    const openDialog = (dialogTitle, dialogDate, dialogContent) => {
+        title.textContent = dialogTitle;
+        date.textContent = dialogDate;
+        content.innerHTML = dialogContent;
+        dialog.showModal();
+        document.body.classList.add("has-open-dialog");
+    };
 
     document.getElementById("catanTable").addEventListener("click", event => {
         const button = event.target.closest("[data-catan-game]");
@@ -365,11 +433,11 @@ const setupCatanGameDialog = (players, games) => {
         const game = games[button.dataset.catanGame];
         if (!game) return;
 
-        title.textContent = game.name;
-        date.textContent = formatDate(game.date);
-        content.innerHTML = renderCatanGameDetails(players, game);
-        dialog.showModal();
-        document.body.classList.add("has-open-dialog");
+        openDialog(game.name, formatDate(game.date), renderCatanGameDetails(players, game));
+    });
+
+    summaryButton.addEventListener("click", () => {
+        openDialog("Overall dice balance", "All recorded Catan games", renderDiceCalibration(games));
     });
 
     closeButton.addEventListener("click", () => dialog.close());

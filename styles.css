@@ -1158,6 +1158,50 @@ h1 {
     font-size: 0.7rem;
 }
 
+.catan-chronicle-heading {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 14px;
+}
+
+.catan-dice-summary-button {
+    position: relative;
+    z-index: 1;
+    margin: -45px 52px 0 0;
+    padding: 8px 13px;
+    flex: 0 0 auto;
+    color: #4b3522;
+    border: 2px solid #3c2818;
+    border-radius: 2px;
+    background: #d2b371;
+    box-shadow: 3px 4px 0 rgba(57, 37, 22, 0.28), inset 0 0 0 1px #edd79b;
+    font: 700 0.64rem/1 "Cinzel", serif;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    cursor: pointer;
+}
+
+.catan-dice-summary-button::before {
+    margin-right: 6px;
+    color: var(--catan-green);
+    content: "◆";
+    font-size: 0.58rem;
+}
+
+.catan-dice-summary-button:hover,
+.catan-dice-summary-button:focus-visible {
+    color: #f4dfaa;
+    background: var(--catan-green);
+    box-shadow: 3px 4px 0 rgba(57, 37, 22, 0.32), inset 0 0 0 1px #4d8b61;
+    transform: translateY(-1px);
+}
+
+.catan-dice-summary-button:hover::before,
+.catan-dice-summary-button:focus-visible::before {
+    color: #f2c95e;
+}
+
 .catan-theme .player-stats-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 22px;
@@ -1712,6 +1756,36 @@ h1 {
     font: 700 1.35rem/1 "Cinzel", serif;
 }
 
+.catan-calibration-summary {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin: 18px 0 28px;
+}
+
+.catan-calibration-summary > span {
+    min-width: 0;
+    padding: 13px 10px;
+    display: grid;
+    place-items: center;
+    align-content: center;
+    border: 2px solid rgba(75, 47, 26, 0.35);
+    background: rgba(255, 247, 207, 0.34);
+    text-align: center;
+}
+
+.catan-calibration-summary strong {
+    color: #7c2d21;
+    font: 700 1.35rem/1 "Cinzel", serif;
+}
+
+.catan-calibration-summary small {
+    margin-top: 6px;
+    color: #765334;
+    font-size: 0.65rem;
+    line-height: 1.25;
+}
+
 .catan-dialog-section + .catan-dialog-section {
     margin-top: 34px;
 }
@@ -1791,6 +1865,28 @@ h1 {
     font-variant-numeric: tabular-nums;
 }
 
+.dice-expected-marker {
+    position: absolute;
+    right: -4px;
+    bottom: var(--dice-expected-height);
+    left: -4px;
+    z-index: 2;
+    border-top: 2px dashed #7c2d21;
+    pointer-events: none;
+}
+
+.dice-expected-marker::after {
+    position: absolute;
+    top: -5px;
+    right: -1px;
+    width: 8px;
+    height: 8px;
+    border: 1px solid #3c2818;
+    background: #f2c95e;
+    content: "";
+    transform: rotate(45deg);
+}
+
 .dice-histogram-column.is-rerolled .dice-histogram-bar {
     border-color: #7c2d21;
     background: repeating-linear-gradient(135deg, #b75233 0 7px, #d2b371 7px 12px);
@@ -1813,6 +1909,44 @@ h1 {
     font-size: 0.57rem;
     font-weight: 700;
     text-transform: uppercase;
+}
+
+.dice-histogram-legend {
+    margin-top: 9px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 18px;
+    color: #765334;
+    font-size: 0.64rem;
+    font-weight: 700;
+}
+
+.dice-histogram-legend span::before {
+    width: 18px;
+    height: 8px;
+    margin-right: 6px;
+    display: inline-block;
+    content: "";
+}
+
+.dice-histogram-legend .is-observed::before {
+    border: 1px solid #245536;
+    background: var(--catan-green);
+}
+
+.dice-histogram-legend .is-expected::before {
+    height: 5px;
+    border-top: 2px dashed #7c2d21;
+}
+
+.catan-calibration-note {
+    margin: 22px 0 0;
+    padding: 12px 14px;
+    color: #62472b;
+    border-left: 4px solid var(--catan-green);
+    background: rgba(255, 247, 207, 0.28);
+    font-size: 0.72rem;
+    line-height: 1.55;
 }
 
 .player-dice-stats {
@@ -2074,6 +2208,18 @@ h1 {
         font-size: 0.88rem;
     }
 
+    .catan-chronicle-heading {
+        display: block;
+    }
+
+    .catan-chronicle-heading .section-title {
+        margin-bottom: 12px;
+    }
+
+    .catan-dice-summary-button {
+        margin: 0 0 24px;
+    }
+
     .ticket-theme h1 {
         font-size: clamp(3rem, 18vw, 5rem);
     }
@@ -2139,6 +2285,18 @@ h1 {
     .catan-game-summary span {
         padding-inline: 6px;
         font-size: 0.68rem;
+    }
+
+    .catan-calibration-summary {
+        gap: 6px;
+    }
+
+    .catan-calibration-summary > span {
+        padding-inline: 5px;
+    }
+
+    .catan-calibration-summary small {
+        font-size: 0.56rem;
     }
 
     .catan-dialog-section-heading {
